@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 
 from django.conf import settings
-from django.core import urlresolvers
+from django import urls
 from django.core.files.base import ContentFile
 from django.db import models
 from django.utils import timezone
@@ -47,8 +47,12 @@ class File(PolymorphicModel, mixins.IconsMixin):
     _icon = "file"
     _file_data_changed_hint = None
 
-    folder = models.ForeignKey(Folder, verbose_name=_('folder'), related_name='all_files',
-        null=True, blank=True)
+    folder = models.ForeignKey(Folder,
+                               verbose_name=_('folder'),
+                               related_name='all_files',
+                               null=True,
+                               blank=True,
+                               on_delete=models.SET_NULL)
     file = MultiStorageFileField(_('file'), null=True, blank=True, max_length=255)
     _file_size = models.IntegerField(_('file size'), null=True, blank=True)
 
